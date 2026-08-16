@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Icon=harbour-micgain
+Name=Mic Gain
+Comment=Fix quiet camera recordings
+Exec=harbour-micgain
+
+[X-Sailjail]
+# The app talks to PulseAudio's native protocol and opens a sub-second
+# record stream to write the persistent per-app volume. Inside a sandbox the
+# record stream is proxied and the restore id no longer matches the camera
+# app's, so the written entry would be useless.
+Sandboxing=Disabled
+OrganizationName=io.github.jimknopfiot
+ApplicationName=harbour-micgain

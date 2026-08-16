@@ -1,0 +1,18 @@
+# Build artifacts
+RPMS/
+*.rpm
+*.o
+moc_*
+Makefile
+*.pro.user
+
+# Qt/lupdate byproducts
+*.qm
+
+# Local helpers (machine-specific, never published)
+*.local.sh
+
+# In-tree build leftovers (mb2)
+harbour-micgain
+*.list
+.mb2/
