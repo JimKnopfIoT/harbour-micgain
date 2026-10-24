@@ -64,7 +64,8 @@ Mic Gain writes a boosted recording volume into exactly that memory:
   recorded or stored.
 - The boost then applies automatically to every future recording of that app.
   Mic Gain does not need to be running for that.
-- Everything is per app and revertible at any time ("Reset to 100 %").
+- Everything is per app and revertible at any time ("Reset to 100 %", or
+  "Reset all apps to 100 %").
 
 The app lists every application that has ever recorded on the device (parsed
 from the stream-restore database), with their launcher icons; any other
@@ -80,8 +81,16 @@ roughly 400 % can clip loud sounds.
 1. Install the RPM (see below), open **Mic Gain**.
 2. Pick the app you want to fix — Advanced Camera and Audio Recorder are
    pre-listed.
-3. Leave the slider at 300 % or adjust; the value is stored the moment you
-   release it. Done — make a test recording.
+3. Leave the slider at 300 % or adjust it, then tap **Apply**. Done — make
+   a test recording.
+
+To undo everything at once, pull down → **Reset all apps to 100 %**: every
+recording entry goes back to the system default.
+
+Qt apps (e.g. Speech Note) record under a per-process name
+`QtPulseAudio:<pid>`, so each run leaves a new entry. Those are hidden from
+the list — a gain set on one would hit whatever later process happens to get
+that pid — but "Reset all" covers them.
 
 ## Installing
 
@@ -102,6 +111,8 @@ With the Sailfish Platform SDK:
 ```sh
 mb2 -t SailfishOS-5.0.0.62-aarch64 build
 ```
+
+AI assisted development
 
 ## License
 

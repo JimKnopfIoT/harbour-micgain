@@ -35,6 +35,10 @@ class MicGain : public QObject
     Q_PROPERTY(bool busy READ busy NOTIFY changed)
     // Human-readable error of the last operation, "" if it succeeded.
     Q_PROPERTY(QString error READ error NOTIFY changed)
+    // Progress of a running resetAll(): entries done / entries in total.
+    // resetTotal is 0 when no reset is running.
+    Q_PROPERTY(int resetDone READ resetDone NOTIFY changed)
+    Q_PROPERTY(int resetTotal READ resetTotal NOTIFY changed)
 
 public:
     explicit MicGain(QObject *parent = nullptr);
@@ -44,9 +48,16 @@ public:
     int currentPercent() const { return m_percent; }
     bool busy() const { return m_busy; }
     QString error() const { return m_error; }
+    int resetDone() const { return m_resetDone; }
+    int resetTotal() const { return m_resetTotal; }
 
     Q_INVOKABLE void refresh();          // read the stored value
     Q_INVOKABLE void apply(int percent); // set and persist a new value
+
+    // Sets every recording entry found by scanTargets() back to 100 % —
+    // including the hidden per-process QtPulseAudio:<pid> ones — one after
+    // the other on a worker thread. Ends with a read of the current target.
+    Q_INVOKABLE void resetAll();
 
     // Application names that already have a recording entry in PulseAudio's
     // stream-restore database, i.e. every app that has ever recorded on this
@@ -69,9 +80,11 @@ signals:
     void changed();
     // Internal: emitted from the worker thread, queued into the GUI thread.
     void workerDone(int percent, const QString &error);
+    void workerProgress(int done);
 
 private slots:
     void onWorkerDone(int percent, const QString &error);
+    void onWorkerProgress(int done);
 
 private:
     void start(int setPercent); // setPercent < 0 = read only
@@ -80,6 +93,8 @@ private:
     int m_percent = 0;
     bool m_busy = false;
     QString m_error;
+    int m_resetDone = 0;
+    int m_resetTotal = 0;
     void ensureDesktopIndex() const;
 
     // Built lazily from /usr/share/applications on first use:

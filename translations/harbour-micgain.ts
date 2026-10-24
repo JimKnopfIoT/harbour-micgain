@@ -90,68 +90,96 @@
 <context>
     <name>MainPage</name>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="73"/>
+        <location filename="../qml/pages/MainPage.qml" line="92"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="77"/>
+        <location filename="../qml/pages/MainPage.qml" line="96"/>
         <source>Rescan apps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="81"/>
+        <location filename="../qml/pages/MainPage.qml" line="100"/>
+        <source>Reset all apps to 100 %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="102"/>
+        <source>Resetting all apps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="106"/>
         <source>Reset to 100 % (system default)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="89"/>
+        <location filename="../qml/pages/MainPage.qml" line="114"/>
         <source>Set recommended 300 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="103"/>
+        <location filename="../qml/pages/MainPage.qml" line="128"/>
         <source>Microphone gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="111"/>
+        <location filename="../qml/pages/MainPage.qml" line="136"/>
         <source>Boosts the recording volume of the selected app. Each app keeps its own value; it is stored permanently and applied to every future recording. Details: pull down → About.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="172"/>
+        <location filename="../qml/pages/MainPage.qml" line="160"/>
+        <source>Apply %1 %</source>
+        <extracomment>%1 is the gain percentage</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="196"/>
+        <source>Resetting %1 of %2</source>
+        <extracomment>%1 entries done, %2 entries in total</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="211"/>
         <source>App</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="180"/>
+        <location filename="../qml/pages/MainPage.qml" line="219"/>
         <source>Important: only apps that have already used the microphone at least once are listed here — the system learns about an app the moment it records for the first time. If an app is missing, make one short recording with it and pull down to rescan, or enter its stream name below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="269"/>
+        <location filename="../qml/pages/MainPage.qml" line="290"/>
+        <source>%1 temporary entries (QtPulseAudio:…) are hidden: Qt apps get a new one each time they start, so a gain set there would hit a random later process. “Reset all apps to 100 %” includes them.</source>
+        <extracomment>%1 is the number of hidden entries</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="322"/>
         <source>Add another app…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="280"/>
+        <location filename="../qml/pages/MainPage.qml" line="333"/>
         <source>Values above 400 % can distort loud sounds; 100 % is the (too quiet) system default. Applying opens the microphone for a fraction of a second; nothing is recorded.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="122"/>
+        <location filename="../qml/pages/MainPage.qml" line="147"/>
         <source>%1 % (%2 dB)</source>
         <extracomment>%1 is the gain percentage, %2 the equivalent in decibels</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="144"/>
+        <location filename="../qml/pages/MainPage.qml" line="172"/>
         <source>Stored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="147"/>
+        <location filename="../qml/pages/MainPage.qml" line="175"/>
         <source>%1 %</source>
         <extracomment>%1 is the stored gain percentage</extracomment>
         <translation type="unfinished"></translation>

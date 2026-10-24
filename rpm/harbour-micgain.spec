@@ -4,7 +4,7 @@
 # Neutral packaging metadata — no personal identifiers.
 Name:       harbour-micgain
 Summary:    Fix quiet camera recordings (microphone gain)
-Version:    0.3.2
+Version:    0.4.0
 Release:    1
 # Neutral build host so built RPMs carry no real hostname/domain.
 %define _buildhost reproducible-builder
@@ -56,6 +56,14 @@ desktop-file-install --delete-original \
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 
 %changelog
+* Sat Oct 24 2026 harbour-micgain contributors 0.4.0-1
+- "Reset all apps to 100 %" in the pull-down menu: sets every recording
+  entry back to the system default in one go, with progress display.
+- Per-process entries "QtPulseAudio:<pid>" (left by every run of a Qt app,
+  e.g. Speech Note) are hidden from the list: a gain set there hits a random
+  later process with the same pid. Reset all still covers them.
+- The slider no longer writes on release; an explicit Apply button does, so
+  a stray tap while scrolling cannot change a stored value.
 * Sun Aug 16 2026 harbour-micgain contributors 0.3.2-1
 - About page wording: name only the device the analysis was done on.
 * Sun Aug 16 2026 harbour-micgain contributors 0.3.1-1

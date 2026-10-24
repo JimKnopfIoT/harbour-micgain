@@ -4,9 +4,16 @@
 
   App picker + one slider. The picker lists every app that has ever recorded
   on this device (scanned from PulseAudio's stream-restore database) plus a
-  free-text entry for anything else. The slider value is written on release
-  (micgain.apply) for the selected app; the stored value is read back after
-  every switch and apply, so the "Stored" line always shows the truth.
+  free-text entry for anything else. The slider value is written only via the
+  Apply button (micgain.apply) for the selected app — a stray tap on the
+  slider while scrolling must not change anything. The stored value is read
+  back after every switch and apply, so the "Stored" line always shows the
+  truth.
+
+  Qt apps (QtMultimedia) record as "QtPulseAudio:<pid>", so every run leaves
+  a new entry that only ever matches a process with that same pid again.
+  Those are hidden from the list — a gain set on one would hit a random
+  later process — but "Reset all" still covers them.
 */
 import QtQuick 2.0
 import Sailfish.Silica 1.0
@@ -18,14 +25,24 @@ Page {
     // recording; the scan result is merged in on top.
     readonly property var curated: ["Advanced Camera", "Audio Recorder"]
     property var apps: []
+    property int hiddenCount: 0
+
+    function isPerProcess(name) {
+        return /^QtPulseAudio:[0-9]+$/.test(name)
+    }
 
     function rescan() {
         var found = micgain.scanTargets()
         var merged = curated.slice()
-        for (var i = 0; i < found.length; i++)
-            if (merged.indexOf(found[i]) < 0)
+        var hidden = 0
+        for (var i = 0; i < found.length; i++) {
+            if (isPerProcess(found[i]))
+                hidden++
+            else if (merged.indexOf(found[i]) < 0)
                 merged.push(found[i])
+        }
         apps = merged
+        hiddenCount = hidden
     }
 
     function dbText(pct) {
@@ -59,6 +76,8 @@ Page {
         }
     }
 
+    RemorsePopup { id: remorse }
+
     Component.onCompleted: {
         rescan()
         micgain.refresh()
@@ -76,6 +95,12 @@ Page {
             MenuItem {
                 text: qsTr("Rescan apps")
                 onClicked: page.rescan()
+            }
+            MenuItem {
+                text: qsTr("Reset all apps to 100 %")
+                enabled: !micgain.busy
+                onClicked: remorse.execute(qsTr("Resetting all apps"),
+                                           function() { micgain.resetAll() })
             }
             MenuItem {
                 text: qsTr("Reset to 100 % (system default)")
@@ -127,12 +152,15 @@ Page {
                 stepSize: 25
                 value: 300
                 enabled: !micgain.busy
-                // Apply once per release, not on every step while dragging —
-                // each apply opens the microphone for a moment.
-                onDownChanged: {
-                    if (!down)
-                        micgain.apply(Math.round(sliderValue))
-                }
+            }
+
+            Button {
+                anchors.horizontalCenter: parent.horizontalCenter
+                //: %1 is the gain percentage
+                text: qsTr("Apply %1 %").arg(Math.round(gainSlider.sliderValue))
+                enabled: !micgain.busy
+                         && Math.round(gainSlider.sliderValue) !== micgain.currentPercent
+                onClicked: micgain.apply(Math.round(gainSlider.sliderValue))
             }
 
             Item {
@@ -156,6 +184,17 @@ Page {
                     size: BusyIndicatorSize.ExtraSmall
                     running: micgain.busy
                 }
+            }
+
+            ProgressBar {
+                width: parent.width
+                visible: micgain.resetTotal > 0
+                minimumValue: 0
+                maximumValue: Math.max(1, micgain.resetTotal)
+                value: micgain.resetDone
+                //: %1 entries done, %2 entries in total
+                label: qsTr("Resetting %1 of %2").arg(micgain.resetDone)
+                                                 .arg(micgain.resetTotal)
             }
 
             Label {
@@ -238,6 +277,20 @@ Page {
                         visible: micgain.target === modelData
                     }
                 }
+            }
+
+            Label {
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                visible: page.hiddenCount > 0
+                wrapMode: Text.WordWrap
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryColor
+                //: %1 is the number of hidden entries
+                text: qsTr("%1 temporary entries (QtPulseAudio:…) are hidden: "
+                    + "Qt apps get a new one each time they start, so a gain "
+                    + "set there would hit a random later process. “Reset all "
+                    + "apps to 100 %” includes them.").arg(page.hiddenCount)
             }
 
             BackgroundItem {

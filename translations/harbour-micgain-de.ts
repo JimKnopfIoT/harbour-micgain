@@ -128,5 +128,28 @@
         <source>Values above 400 % can distort loud sounds; 100 % is the (too quiet) system default. Applying opens the microphone for a fraction of a second; nothing is recorded.</source>
         <translation>Werte über 400 % können laute Geräusche verzerren; 100 % ist der (zu leise) Systemstandard. Beim Anwenden ist das Mikrofon für den Bruchteil einer Sekunde aktiv; aufgenommen wird nichts.</translation>
     </message>
+    <message>
+        <source>Reset all apps to 100 %</source>
+        <translation>Alle Apps auf 100 % zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Resetting all apps</source>
+        <translation>Setze alle Apps zurück</translation>
+    </message>
+    <message>
+        <source>Apply %1 %</source>
+        <extracomment>%1 is the gain percentage</extracomment>
+        <translation>%1 % übernehmen</translation>
+    </message>
+    <message>
+        <source>Resetting %1 of %2</source>
+        <extracomment>%1 entries done, %2 entries in total</extracomment>
+        <translation>Setze %1 von %2 zurück</translation>
+    </message>
+    <message>
+        <source>%1 temporary entries (QtPulseAudio:…) are hidden: Qt apps get a new one each time they start, so a gain set there would hit a random later process. “Reset all apps to 100 %” includes them.</source>
+        <extracomment>%1 is the number of hidden entries</extracomment>
+        <translation>%1 temporäre Einträge (QtPulseAudio:…) sind ausgeblendet: Qt-Apps bekommen bei jedem Start einen neuen, eine dort gesetzte Verstärkung träfe also einen zufälligen späteren Prozess. „Alle Apps auf 100 % zurücksetzen“ erfasst sie mit.</translation>
+    </message>
 </context>
 </TS>

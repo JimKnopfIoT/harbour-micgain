@@ -189,6 +189,8 @@ MicGain::MicGain(QObject *parent)
     // the result back onto the GUI thread.
     connect(this, &MicGain::workerDone, this, &MicGain::onWorkerDone,
             Qt::QueuedConnection);
+    connect(this, &MicGain::workerProgress, this, &MicGain::onWorkerProgress,
+            Qt::QueuedConnection);
 }
 
 void MicGain::setTarget(const QString &name)
@@ -232,9 +234,49 @@ void MicGain::start(int setPercent)
     }).detach();
 }
 
+void MicGain::resetAll()
+{
+    if (m_busy)
+        return;
+    QList<QByteArray> names;
+    for (const QString &n : scanTargets())
+        names << n.toUtf8();
+    m_busy = true;
+    m_error.clear();
+    m_resetDone = 0;
+    m_resetTotal = names.size();
+    emit changed();
+
+    const QByteArray current = m_target.toUtf8();
+    std::thread([this, names, current]() {
+        // Keep going past single failures; report how many there were.
+        int failed = 0;
+        for (int i = 0; i < names.size(); ++i) {
+            QString err;
+            if (runPulse(names.at(i), 100, &err) < 0)
+                ++failed;
+            emit workerProgress(i + 1);
+        }
+        QString err;
+        int pct = runPulse(current, -1, &err);
+        if (failed > 0)
+            err = QStringLiteral("Reset failed for %1 of %2 entries")
+                      .arg(failed).arg(names.size());
+        emit workerDone(pct, err);
+    }).detach();
+}
+
+void MicGain::onWorkerProgress(int done)
+{
+    m_resetDone = done;
+    emit changed();
+}
+
 void MicGain::onWorkerDone(int percent, const QString &error)
 {
     m_busy = false;
+    m_resetDone = 0;
+    m_resetTotal = 0;
     m_error = error;
     if (percent >= 0)
         m_percent = percent;
