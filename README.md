@@ -112,7 +112,7 @@ With the Sailfish Platform SDK:
 mb2 -t SailfishOS-5.0.0.62-aarch64 build
 ```
 
-AI assisted development
+LLM assisted development
 
 ## License
 
